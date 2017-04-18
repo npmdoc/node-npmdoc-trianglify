@@ -1,0 +1,575 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="https://github.com/qrohlf/trianglify">trianglify (v1.0.1)</a>
+</h1>
+<h4>Trianglify is a javascript library for generating colorful triangle meshes that can be used as SVG images and CSS backgrounds.</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.trianglify">module trianglify</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.trianglify.trianglify">
+            function <span class="apidocSignatureSpan"></span>trianglify
+            <span class="apidocSignatureSpan">(opts)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.trianglify.pattern">
+            function <span class="apidocSignatureSpan">trianglify.</span>pattern
+            <span class="apidocSignatureSpan">(polys, opts)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.trianglify.points">
+            function <span class="apidocSignatureSpan">trianglify.</span>points
+            <span class="apidocSignatureSpan">(width, height, bleed_x, bleed_y, cell_size, variance, rand_fn)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.trianglify.toString">
+            function <span class="apidocSignatureSpan">trianglify.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">trianglify.</span>colorbrewer</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">trianglify.</span>defaults</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.trianglify.pattern">module trianglify.pattern</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.trianglify.pattern.pattern">
+            function <span class="apidocSignatureSpan">trianglify.</span>pattern
+            <span class="apidocSignatureSpan">(polys, opts)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.trianglify.points">module trianglify.points</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.trianglify.points.points">
+            function <span class="apidocSignatureSpan">trianglify.</span>points
+            <span class="apidocSignatureSpan">(width, height, bleed_x, bleed_y, cell_size, variance, rand_fn)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.trianglify.toString">module trianglify.toString</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.trianglify.toString.toString">
+            function <span class="apidocSignatureSpan">trianglify.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.trianglify" id="apidoc.module.trianglify">module trianglify</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.trianglify.trianglify" id="apidoc.element.trianglify.trianglify">
+        function <span class="apidocSignatureSpan"></span>trianglify
+        <span class="apidocSignatureSpan">(opts)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function Trianglify(opts) {
+  var rand;
+
+  // apply defaults
+  opts = _merge_opts(defaults, opts);
+
+  // setup seedable RNG
+  rand = seedrandom(opts.seed);
+
+  // randomize colors if requested
+  if (opts.x_colors === 'random') opts.x_colors = _random_from_palette();
+  if (opts.y_colors === 'random') opts.y_colors = _random_from_palette();
+  if (opts.y_colors === 'match_x') opts.y_colors = opts.x_colors;
+
+  // some sanity-checking
+  if (!(opts.width &gt; 0 &amp;&amp; opts.height &gt; 0)) {
+    throw new Error("Width and height must be numbers greater than 0");
+  }
+
+  if (opts.cell_size &lt; 2) {
+    throw new Error("Cell size must be greater than 2.");
+  }
+
+  // Setup the color gradient function
+  var gradient;
+
+  if (opts.color_function) {
+    gradient = function(x, y) {
+      return chroma(opts.color_function(x, y));
+    };
+  } else {
+    var x_color = chroma.scale(opts.x_colors).mode(opts.color_space);
+    var y_color = chroma.scale(opts.y_colors).mode(opts.color_space);
+    gradient = function(x, y) {
+      return chroma.interpolate(x_color(x), y_color(y), 0.5, opts.color_space);
+    };
+  }
+
+  // Figure out key dimensions
+
+  // it's a pain to prefix width and height with opts all the time, so let's
+  // give them proper variables to refer to
+  var width = opts.width;
+  var height = opts.height;
+
+  // How many cells we're going to have on each axis (pad by 2 cells on each edge)
+  var cells_x = Math.floor((width + 4 * opts.cell_size) / opts.cell_size);
+  var cells_y = Math.floor((height + 4 * opts.cell_size) / opts.cell_size);
+
+  // figure out the bleed widths to center the grid
+  var bleed_x = ((cells_x * opts.cell_size) - width)/2;
+  var bleed_y = ((cells_y * opts.cell_size) - height)/2;
+
+  // how much can out points wiggle (+/-) given the cell padding?
+  var variance = opts.cell_size * opts.variance / 2;
+
+  // Set up normalizers
+  var norm_x = function(x) {
+    return _map(x, [-bleed_x, width+bleed_x], [0, 1]);
+  };
+
+  var norm_y = function(y) {
+    return _map(y, [-bleed_y, height+bleed_y], [0, 1]);
+  };
+
+  // generate a point mesh
+  var points = opts.points || _generate_points(width, height, bleed_x, bleed_y, opts.cell_size, variance, rand);
+
+  // delaunay.triangulate gives us indices into the original coordinate array
+  var geom_indices = delaunay.triangulate(points);
+
+  // iterate over the indices in groups of three to flatten them into polygons, with color lookup
+  var triangles = [];
+  var lookup_point = function(i) { return points[i];};
+  for (var i=0; i &lt; geom_indices.length; i += 3) {
+    var vertices = [geom_indices[i], geom_indices[i+1], geom_indices[i+2]].map(lookup_point);
+    var centroid = _centroid(vertices);
+    var color = gradient(norm_x(centroid.x), norm_y(centroid.y)).hex();
+    triangles.push([color, vertices]);
+  }
+  return Pattern(triangles, opts);
+
+
+<span class="apidocCodeCommentSpan">  /*********************************************************
+  *
+  * Private functions
+  *
+  **********************************************************/
+</span>
+  function _map(num, in_range, out_range ) {
+    return ( num - in_range[0] ) * ( out_range[1] - out_range[0] ) / ( in_range[1] - in_range[0] ) + out_range[0];
+  }
+
+  //triangles only!
+  function _centroid(d) {
+    return {
+      x: (d[0][0] + d[1][0] + d[2][0])/3,
+      y: (d[0][1] + d[1][1] + d[2][1])/3
+    };
+  }
+
+  // select a random palette from colorbrewer
+  function _random_from_palette() {
+    if (opts.palette instanceof Array) {
+      return opts.palette[Math.floor(rand()*opts.palette.length)];
+    }
+
+    var keys = Object.keys(opts.palette);
+    return opts.palette[keys[Math.floor(rand()*keys.length)]];
+  }
+
+  // shallow extend (sort of) for option defaults
+  function _merge_opts(defaults, options) {
+    var out = {};
+
+    // shallow-copy defaults so we don't mutate the input objects (bad)
+    for (var key in defaults) {
+      out[key] = defaults[key];
+    }
+
+    for (key in options) {
+      if (defaults.hasOwnProperty(key)) {
+        out[key] = options[key]; // override defaults with options
+      } else {
+        throw new Error(key+" is not a configuration option for Trianglify. Check your spelling? ...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.trianglify.pattern" id="apidoc.element.trianglify.pattern">
+        function <span class="apidocSignatureSpan">trianglify.</span>pattern
+        <span class="apidocSignatureSpan">(polys, opts)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function Pattern(polys, opts) {
+
+  // SVG rendering method
+  function render_svg(svgOpts) {
+    var svg = doc.createElementNS("http://www.w3.org/2000/svg", 'svg');
+    svg.setAttribute('width', opts.width);
+    svg.setAttribute('height', opts.height);
+    if (svgOpts &amp;&amp; svgOpts.includeNamespace) {
+      svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+    }
+
+    polys.forEach(function(poly) {
+      var path = doc.createElementNS("http://www.w3.org/2000/svg", 'path');
+      path.setAttribute("d", "M" + poly[1].join("L") + "Z");
+      path.setAttribute("fill", poly[0]);
+      path.setAttribute("stroke", poly[0]);
+      path.setAttribute("stroke-width", opts.stroke_width);
+      svg.appendChild(path);
+    });
+
+    return svg;
+  }
+
+  // Canvas rendering method
+  function render_canvas(canvas) {
+    // check for canvas support
+    var ctx;
+    if (typeof process !== "undefined") {
+      try {
+        require('canvas');
+      } catch (e) {
+        throw Error('The optional node-canvas dependency is needed for Trianglify to render using canvas in node.');
+      }
+    }
+
+    if (!canvas) {
+      canvas = doc.createElement('canvas');
+    }
+
+    canvas.setAttribute('width', opts.width);
+    canvas.setAttribute('height', opts.height);
+    ctx = canvas.getContext("2d");
+    ctx.canvas.width = opts.width;
+    ctx.canvas.height = opts.height;
+
+    polys.forEach(function(poly) {
+      ctx.fillStyle = ctx.strokeStyle = poly[0];
+      ctx.lineWidth = opts.stroke_width;
+      ctx.beginPath();
+      ctx.moveTo.apply(ctx, poly[1][0]);
+      ctx.lineTo.apply(ctx, poly[1][1]);
+      ctx.lineTo.apply(ctx, poly[1][2]);
+      ctx.fill();
+      ctx.stroke();
+    });
+
+    return canvas;
+  }
+
+  // PNG rendering method
+  // currently returns a data url as a string since toBlob support really isn't there yet...
+  function render_png() {
+    return render_canvas().toDataURL("image/png");
+  }
+
+  // Return an object with all the relevant functions/properties attached to it
+  return {
+    polys: polys,
+    opts: opts,
+    svg: render_svg,
+    canvas: render_canvas,
+    png: render_png
+  };
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.trianglify.points" id="apidoc.element.trianglify.points">
+        function <span class="apidocSignatureSpan">trianglify.</span>points
+        <span class="apidocSignatureSpan">(width, height, bleed_x, bleed_y, cell_size, variance, rand_fn)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function generate_grid(width, height, bleed_x, bleed_y, cell_size, variance, rand_fn) {
+  var w = width + bleed_x;
+  var h = height + bleed_y;
+  var half_cell_size = cell_size * 0.5;
+  var double_v = variance * 2;
+  var negative_v = -variance;
+
+  var points = [];
+  for (var i = -bleed_x; i &lt; w; i += cell_size) {
+    for (var j = -bleed_y; j &lt; h; j += cell_size) {
+      var x = (i + half_cell_size) + (rand_fn() * double_v + negative_v);
+      var y = (j + half_cell_size) + (rand_fn() * double_v + negative_v);
+      points.push([Math.floor(x), Math.floor(y)]);
+    }
+  }
+
+  return points;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.trianglify.toString" id="apidoc.element.trianglify.toString">
+        function <span class="apidocSignatureSpan">trianglify.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">toString = function () {
+    return text;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.trianglify.pattern" id="apidoc.module.trianglify.pattern">module trianglify.pattern</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.trianglify.pattern.pattern" id="apidoc.element.trianglify.pattern.pattern">
+        function <span class="apidocSignatureSpan">trianglify.</span>pattern
+        <span class="apidocSignatureSpan">(polys, opts)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function Pattern(polys, opts) {
+
+  // SVG rendering method
+  function render_svg(svgOpts) {
+    var svg = doc.createElementNS("http://www.w3.org/2000/svg", 'svg');
+    svg.setAttribute('width', opts.width);
+    svg.setAttribute('height', opts.height);
+    if (svgOpts &amp;&amp; svgOpts.includeNamespace) {
+      svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+    }
+
+    polys.forEach(function(poly) {
+      var path = doc.createElementNS("http://www.w3.org/2000/svg", 'path');
+      path.setAttribute("d", "M" + poly[1].join("L") + "Z");
+      path.setAttribute("fill", poly[0]);
+      path.setAttribute("stroke", poly[0]);
+      path.setAttribute("stroke-width", opts.stroke_width);
+      svg.appendChild(path);
+    });
+
+    return svg;
+  }
+
+  // Canvas rendering method
+  function render_canvas(canvas) {
+    // check for canvas support
+    var ctx;
+    if (typeof process !== "undefined") {
+      try {
+        require('canvas');
+      } catch (e) {
+        throw Error('The optional node-canvas dependency is needed for Trianglify to render using canvas in node.');
+      }
+    }
+
+    if (!canvas) {
+      canvas = doc.createElement('canvas');
+    }
+
+    canvas.setAttribute('width', opts.width);
+    canvas.setAttribute('height', opts.height);
+    ctx = canvas.getContext("2d");
+    ctx.canvas.width = opts.width;
+    ctx.canvas.height = opts.height;
+
+    polys.forEach(function(poly) {
+      ctx.fillStyle = ctx.strokeStyle = poly[0];
+      ctx.lineWidth = opts.stroke_width;
+      ctx.beginPath();
+      ctx.moveTo.apply(ctx, poly[1][0]);
+      ctx.lineTo.apply(ctx, poly[1][1]);
+      ctx.lineTo.apply(ctx, poly[1][2]);
+      ctx.fill();
+      ctx.stroke();
+    });
+
+    return canvas;
+  }
+
+  // PNG rendering method
+  // currently returns a data url as a string since toBlob support really isn't there yet...
+  function render_png() {
+    return render_canvas().toDataURL("image/png");
+  }
+
+  // Return an object with all the relevant functions/properties attached to it
+  return {
+    polys: polys,
+    opts: opts,
+    svg: render_svg,
+    canvas: render_canvas,
+    png: render_png
+  };
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.trianglify.points" id="apidoc.module.trianglify.points">module trianglify.points</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.trianglify.points.points" id="apidoc.element.trianglify.points.points">
+        function <span class="apidocSignatureSpan">trianglify.</span>points
+        <span class="apidocSignatureSpan">(width, height, bleed_x, bleed_y, cell_size, variance, rand_fn)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function generate_grid(width, height, bleed_x, bleed_y, cell_size, variance, rand_fn) {
+  var w = width + bleed_x;
+  var h = height + bleed_y;
+  var half_cell_size = cell_size * 0.5;
+  var double_v = variance * 2;
+  var negative_v = -variance;
+
+  var points = [];
+  for (var i = -bleed_x; i &lt; w; i += cell_size) {
+    for (var j = -bleed_y; j &lt; h; j += cell_size) {
+      var x = (i + half_cell_size) + (rand_fn() * double_v + negative_v);
+      var y = (j + half_cell_size) + (rand_fn() * double_v + negative_v);
+      points.push([Math.floor(x), Math.floor(y)]);
+    }
+  }
+
+  return points;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.trianglify.toString" id="apidoc.module.trianglify.toString">module trianglify.toString</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.trianglify.toString.toString" id="apidoc.element.trianglify.toString.toString">
+        function <span class="apidocSignatureSpan">trianglify.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function toString() { [native code] }</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
