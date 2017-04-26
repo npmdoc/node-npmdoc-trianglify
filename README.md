@@ -1,4 +1,7 @@
-# api documentation for  [trianglify (v1.0.1)](https://github.com/qrohlf/trianglify)  [![npm package](https://img.shields.io/npm/v/npmdoc-trianglify.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-trianglify) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-trianglify.svg)](https://travis-ci.org/npmdoc/node-npmdoc-trianglify)
+# npmdoc-trianglify
+
+#### basic api documentation for  [trianglify (v1.0.1)](https://github.com/qrohlf/trianglify)  [![npm package](https://img.shields.io/npm/v/npmdoc-trianglify.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-trianglify) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-trianglify.svg)](https://travis-ci.org/npmdoc/node-npmdoc-trianglify)
+
 #### Trianglify is a javascript library for generating colorful triangle meshes that can be used as SVG images and CSS backgrounds.
 
 [![NPM](https://nodei.co/npm/trianglify.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/trianglify)
@@ -101,7 +104,8 @@
         "start": "gulp",
         "test": "mocha test/test.js"
     },
-    "version": "1.0.1"
+    "version": "1.0.1",
+    "bin": {}
 }
 ```
 
